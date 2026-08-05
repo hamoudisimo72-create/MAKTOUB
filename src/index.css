@@ -1,0 +1,1441 @@
+/* ==========================================================================
+   Ayoub & Aya - Smooth Dynamic Live Gold Countdown Timer (100% Matching Screenshot)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg-sacred-cream: #FAF7F2;
+  --bg-dark-emerald: #1B2B22;
+
+  --gold-primary: #9E7D3B;
+  --gold-dark: #7A5C22;
+  --gold-light: #F7E7C4;
+  --gold-metallic: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+
+  --text-dark: #2C3531;
+  --text-muted: #738079;
+
+  --font-cursive: 'Great Vibes', 'Cormorant Garamond', cursive;
+  --font-arabic-title: 'Aref Ruqaa', 'Amiri', serif;
+  --font-arabic-body: 'Amiri', serif;
+  --font-serif: 'Cormorant Garamond', 'Cinzel', serif;
+  --font-royal: 'Cinzel', serif;
+  --font-sans: 'Montserrat', sans-serif;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--bg-sacred-cream);
+  color: var(--text-dark);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: min(520px, 100vw);
+  min-height: 100vh;
+  position: relative;
+  background-color: transparent;
+}
+
+.intro-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: linear-gradient(135deg, #f2e8dc 0%, #efe8df 38%, #e6dfd5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: opacity 0.55s ease;
+}
+
+.intro-video-wrap {
+  width: min(520px, 100vw);
+  height: 100dvh;
+  border-radius: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f2e8dc 0%, #efe8df 38%, #e6dfd5 100%);
+  position: relative;
+  transform-origin: center center;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.9s ease, filter 0.9s ease;
+}
+
+.intro-portal.intro-opening .intro-video-wrap {
+  transform: scale(1.08) translateY(-10px);
+  opacity: 1;
+  filter: saturate(1) brightness(1);
+}
+
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-sacred-cream);
+  animation: introVideoReveal 1.1s ease both;
+}
+
+@keyframes introVideoReveal {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.intro-video-poster {
+  position: absolute;
+  inset: 0;
+  background: url('/assets/images/intro-poster.jpg') center center / cover no-repeat;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.intro-video-playing + .intro-video-poster {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-center-target {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.intro-cta-copy {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  pointer-events: none;
+  animation: pulse-copy 1.4s ease-in-out infinite alternate;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.intro-cta-arrow {
+  width: 12px;
+  height: 9px;
+  display: block;
+  position: relative;
+  opacity: 0.96;
+  transform-origin: center;
+  animation: pulse-arrow 1.4s ease-in-out infinite alternate;
+}
+
+.intro-cta-arrow::before,
+.intro-cta-arrow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 9px;
+  background-color: rgba(255, 255, 255, 0.55);
+  transform-origin: top center;
+}
+
+.intro-cta-arrow::before {
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.intro-cta-arrow::after {
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+@keyframes pulse-copy {
+  from {
+    transform: translateX(-50%) scale(0.98);
+    opacity: 0.75;
+  }
+  to {
+    transform: translateX(-50%) scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+@keyframes pulse-arrow {
+  from {
+    transform: scale(0.95);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.intro-cta-copy p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+#weiVideoWrap {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F9F0E0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+#weiVideoWrap.wei-video-in {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#weiVideoWrap.wei-video-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s ease;
+}
+
+#weiVideo {
+  width: 100%;
+  max-width: 440px;
+  display: block;
+  object-fit: contain;
+}
+
+#weiVideoSeal {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(ellipse at center, #6A131A 0%, #6A131A 55%, transparent 75%);
+  width: 160px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#weiVideoSeal.visible {
+  opacity: 1;
+}
+
+#weiVideoSeal span {
+  font-family: var(--font-cursive);
+  font-size: 2.6rem;
+  color: #F0D98A;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+/* FLOATING CONTROLS */
+.main-website {
+  background-color: var(--bg-sacred-cream);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+  animation: inviteReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.main-website.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.985);
+}
+
+@keyframes inviteReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Fixed circular music button — bottom right corner */
+.music-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-dark-emerald);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  will-change: transform;
+}
+
+.music-fab:hover {
+  transform: scale(1.06);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.26);
+  background: #172315;
+}
+
+.music-fab svg {
+  width: 28px;
+  height: 28px;
+  color: inherit;
+}
+
+/* Hide music button when intro portal is visible */
+.app-shell .intro-portal ~ .music-fab {
+  display: none !important;
+}
+
+.site-content-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ==========================================================================
+   2. HERO SECTION
+   ========================================================================== */
+.marble-hero-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+
+.marble-card-frame {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 100vh;
+  background: url('/assets/images/gold_marble_fluid_bg.jpg') center center/cover no-repeat;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: clamp(120px, 16vh, 180px) 32px clamp(60px, 10vh, 100px) 40px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.marble-content-box {
+  width: 75%;
+  max-width: 480px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 3vh, 32px);
+}
+
+.marble-welcome-tag {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #7E612B;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.marble-names-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  margin: 10px 0;
+}
+
+.marble-name-groom {
+  font-family: var(--font-cursive);
+  font-size: clamp(4.8rem, 10vw, 6.4rem);
+  color: #9E7D3B;
+  line-height: 0.85;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.9);
+}
+
+.marble-name-amp {
+  font-family: var(--font-cursive);
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  color: #9E7D3B;
+  margin: -12px 0;
+  font-style: italic;
+}
+
+.marble-name-bride {
+  font-family: var(--font-cursive);
+  font-size: clamp(4.8rem, 10vw, 6.4rem);
+  color: #9E7D3B;
+  line-height: 0.85;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.9);
+}
+
+.marble-date-numbers {
+  font-family: 'Cormorant Garamond', 'Cinzel', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #8A651E;
+  margin-top: 10px;
+}
+
+.marble-down-arrow-wrap {
+  width: 75%;
+  max-width: 480px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.marble-chevron-down {
+  width: 14px;
+  height: 14px;
+  border-right: 2.5px solid #9E7D3B;
+  border-bottom: 2.5px solid #9E7D3B;
+  transform: rotate(45deg);
+  animation: cleanBounceDown 1.8s infinite;
+}
+
+@keyframes cleanBounceDown {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.6; }
+  50% { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+}
+
+/* ==========================================================================
+   3. PURE VECTOR DOUBLE-LINE POINTED ARCH FRAME (NO BACKGROUND IMAGE FILE)
+   ========================================================================== */
+.pure-arch-verse-container {
+  padding: 80px 20px 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pure-arch-verse-card {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: clamp(90px, 12vw, 130px) clamp(24px, 5vw, 48px) clamp(60px, 8vw, 90px) clamp(24px, 5vw, 48px);
+  text-align: center;
+  background: transparent;
+}
+
+.arch-svg-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.arch-card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.blossom-bismillah {
+  font-family: var(--font-arabic-title);
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  color: #7A5C22;
+  margin-bottom: 16px;
+  direction: rtl;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+.exact-arabesque-motif {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 24px 0;
+}
+
+.blossom-verse-ar {
+  font-family: var(--font-arabic-body);
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+  line-height: 2.2;
+  color: #2C3531;
+  direction: rtl;
+  margin-bottom: 22px;
+  font-weight: 700;
+}
+
+.blossom-verse-en {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.9vw, 1.2rem);
+  font-style: italic;
+  color: #47574E;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.blossom-verse-ref {
+  font-size: 0.88rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #8A651E;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.gold-arabesque-line-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+}
+
+.gold-arabesque-line-divider .line-half {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #9E7D3B, transparent);
+}
+
+/* ==========================================================================
+   4. SMOOTH LIVE DYNAMIC GOLD TIMER (100% MATCHING USER SCREENSHOT)
+   ========================================================================== */
+.clean-inline-countdown {
+  padding: 60px 20px 40px 20px;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 700px;
+}
+
+.clean-countdown-title {
+  font-family: var(--font-cursive);
+  font-size: clamp(2.6rem, 5.8vw, 4.2rem);
+  color: #8A651E;
+  margin-bottom: 36px;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Main row: [unit-col] [colon] [unit-col] [colon] ... */
+.clean-countdown-digits-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Each unit col: number on top, label below */
+.countdown-unit-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: clamp(64px, 14vw, 110px);
+}
+
+.digit-unit {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 7vw, 5rem);
+  color: #9E7D3B;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  display: block;
+  /* Smooth digit flip on change */
+  transition: opacity 0.15s ease;
+}
+
+.label-unit {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  color: #8A651E;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* Colon separator sits between unit columns, vertically centered on the number */
+.colon-sep {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  color: #9E7D3B;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0 clamp(4px, 1.2vw, 14px);
+  /* align with digit top */
+  align-self: flex-start;
+  animation: smoothColonPulse 2s ease-in-out infinite;
+}
+
+@keyframes smoothColonPulse {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 0.35; }
+}
+
+.label-sep {
+  width: 1ch;
+}
+
+/* SEPARATORS */
+.section-block {
+  padding: 90px 20px;
+  text-align: center;
+}
+
+.gold-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 44px 0;
+}
+
+.gold-ornament::before,
+.gold-ornament::after {
+  content: "";
+  height: 1px;
+  width: 90px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
+
+.gold-ornament i, .gold-ornament svg {
+  color: var(--gold-primary);
+  font-size: 1.3rem;
+}
+
+/* TIMELINE */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.schedule-card {
+  background: white;
+  border: 1px solid rgba(158, 125, 59, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 36px 26px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.schedule-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(158, 125, 59, 0.08);
+  border: 1px solid var(--gold-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px auto;
+  color: var(--gold-primary);
+  font-size: 1.4rem;
+}
+
+.schedule-time {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+  margin-bottom: 6px;
+}
+
+.schedule-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--bg-dark-emerald);
+  margin-bottom: 8px;
+}
+
+.schedule-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   SCHEDULE OF EVENTS — Deckle Parchment Vertical Timeline
+   ========================================================================== */
+.soe-section {
+  padding: 60px 20px;
+}
+
+/* Outer shadow wrapper (clip-path hides box-shadow so we layer it) */
+.soe-card-shadow {
+  max-width: 620px;
+  margin: 0 auto;
+  border-radius: 4px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.09);
+}
+
+/* The deckle parchment card with torn top+bottom edges via clip-path */
+.soe-card {
+  background: #F4EEE6;
+  padding: 56px 48px 56px 48px;
+  clip-path: polygon(
+    0% 1.8%, 1.5% 0%, 3% 1.2%, 4.5% 0.3%, 6% 1.6%, 7.5% 0%, 9% 1.4%, 10.5% 0.5%,
+    12% 1.8%, 13.5% 0%, 15% 1.2%, 16.5% 0.6%, 18% 1.8%, 19.5% 0.2%, 21% 1.5%,
+    22.5% 0%, 24% 1.3%, 25.5% 0.7%, 27% 1.9%, 28.5% 0.1%, 30% 1.6%, 31.5% 0.4%,
+    33% 1.8%, 34.5% 0%, 36% 1.4%, 37.5% 0.6%, 39% 1.7%, 40.5% 0.2%, 42% 1.5%,
+    43.5% 0%, 45% 1.3%, 46.5% 0.8%, 48% 1.8%, 49.5% 0.1%, 51% 1.6%, 52.5% 0.4%,
+    54% 1.9%, 55.5% 0%, 57% 1.3%, 58.5% 0.7%, 60% 1.8%, 61.5% 0.2%, 63% 1.5%,
+    64.5% 0%, 66% 1.4%, 67.5% 0.6%, 69% 1.8%, 70.5% 0.3%, 72% 1.6%, 73.5% 0%,
+    75% 1.3%, 76.5% 0.8%, 78% 1.9%, 79.5% 0.1%, 81% 1.5%, 82.5% 0.4%, 84% 1.8%,
+    85.5% 0%, 87% 1.3%, 88.5% 0.7%, 90% 1.8%, 91.5% 0.2%, 93% 1.5%, 94.5% 0%,
+    96% 1.4%, 97.5% 0.6%, 100% 1.8%,
+    100% 98.2%, 98.5% 100%, 97% 98.8%, 95.5% 99.7%, 94% 98.4%, 92.5% 100%,
+    91% 98.6%, 89.5% 99.5%, 88% 98.2%, 86.5% 100%, 85% 98.8%, 83.5% 99.4%,
+    82% 98.2%, 80.5% 99.9%, 79% 98.5%, 77.5% 99.6%, 76% 98.1%, 74.5% 100%,
+    73% 98.7%, 71.5% 99.3%, 70% 98.2%, 68.5% 99.8%, 67% 98.5%, 65.5% 99.6%,
+    64% 98.2%, 62.5% 100%, 61% 98.7%, 59.5% 99.2%, 58% 98.3%, 56.5% 99.9%,
+    55% 98.4%, 53.5% 99.7%, 52% 98.1%, 50.5% 100%, 49% 98.6%, 47.5% 99.4%,
+    46% 98.2%, 44.5% 99.8%, 43% 98.5%, 41.5% 99.5%, 40% 98.2%, 38.5% 100%,
+    37% 98.8%, 35.5% 99.3%, 34% 98.2%, 32.5% 99.9%, 31% 98.4%, 29.5% 99.6%,
+    28% 98.1%, 26.5% 100%, 25% 98.7%, 23.5% 99.2%, 22% 98.3%, 20.5% 99.8%,
+    19% 98.5%, 17.5% 99.6%, 16% 98.2%, 14.5% 100%, 13% 98.7%, 11.5% 99.4%,
+    10% 98.2%, 8.5% 99.8%, 7% 98.4%, 5.5% 99.6%, 4% 98.2%, 2.5% 100%, 0% 98.2%
+  );
+}
+
+/* Title row: ornament — title — ornament */
+.soe-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.soe-ornament {
+  width: 60px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.soe-title {
+  font-family: var(--font-cursive);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: #8A651E;
+  font-weight: 400;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+}
+
+/* Timeline container */
+.soe-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each row: time — mid (line+dot) — event */
+.soe-item {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  align-items: stretch;
+  min-height: 88px;
+}
+
+.soe-item-last .soe-mid {
+  justify-content: flex-start;
+}
+
+/* Time label (left, right-aligned) */
+.soe-time {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: #5A4030;
+  font-weight: 400;
+  text-align: right;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+/* Middle column: top line, dot, bottom line */
+.soe-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+}
+
+.soe-line-top {
+  flex: 1;
+  width: 1.5px;
+  background: #9E7D3B;
+  min-height: 20px;
+}
+
+.soe-line-bottom {
+  flex: 1;
+  width: 1.5px;
+  background: #9E7D3B;
+  min-height: 20px;
+}
+
+/* First item: hide top line */
+.soe-item:first-child .soe-line-top {
+  background: transparent;
+}
+
+/* Diamond bullet */
+.soe-diamond {
+  font-size: 0.65rem;
+  color: #7A5C22;
+  line-height: 1;
+  flex-shrink: 0;
+  margin: 2px 0;
+  opacity: 0.4;
+  transition: all 0.2s ease;
+}
+
+/* Rose flower bullet (special) */
+.soe-rose {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin: -4px 0;
+  filter: saturate(0.8) brightness(0.95);
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+/* Scroll-active rose: pop in with gentle bloom */
+.soe-rose-active {
+  animation: roseBloom 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  filter: saturate(1) brightness(1);
+}
+
+@keyframes roseBloom {
+  0%   { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(5deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+
+/* Invisible spacer for first item top line */
+.soe-line-invisible {
+  background: transparent !important;
+}
+
+/* Active event label: gold highlight */
+.soe-event-active {
+  color: #8A651E;
+  font-weight: 600;
+}
+
+/* Next (upcoming) event: slightly brighter than dim */
+.soe-event-next {
+  color: #7A6040;
+  font-weight: 500;
+}
+
+/* Dim (past/future) events */
+.soe-event-dim {
+  color: #A09080;
+  font-weight: 400;
+}
+
+/* Active time: gold */
+.soe-time-active {
+  color: #8A651E;
+  font-weight: 600;
+}
+
+/* Next time: slightly visible */
+.soe-time-next {
+  color: #7A6040;
+  font-weight: 500;
+}
+
+/* Dim time */
+.soe-time-dim {
+  color: #B0A090;
+  font-weight: 400;
+}
+
+/* Next dot: slightly bigger, golden glow */
+.soe-diamond-next {
+  font-size: 0.8rem;
+  color: #9E7D3B;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+/* Event label (right, left-aligned) */
+.soe-event {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: #5A4030;
+  font-weight: 400;
+  text-align: left;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1.4;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .soe-card {
+    padding: 48px 24px;
+  }
+  .soe-title-row {
+    gap: 10px;
+  }
+  .soe-ornament {
+    width: 40px;
+  }
+}
+
+/* ==========================================================================
+   VENUE PHOTO GALLERY + CAROUSEL
+   ========================================================================== */
+.venue-gallery-section {
+  padding: 60px 20px 40px 20px;
+  text-align: center;
+}
+
+.venue-gallery-header {
+  margin-bottom: 32px;
+}
+
+.venue-gallery-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--bg-dark-emerald);
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Carousel wrapper */
+.vc-wrap {
+  max-width: 760px;
+  margin: 0 auto 28px auto;
+}
+
+/* Photo stage: taller frame */
+.vc-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  background: #1a1a1a;
+}
+
+/* All images stacked, only active one is visible */
+.vc-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.vc-img-active {
+  opacity: 1;
+}
+
+/* ROYAL VENUE badge */
+.vc-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(27, 43, 34, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #F7E7C4;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-family: var(--font-royal);
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
+  font-weight: 600;
+  border: 1px solid rgba(158, 125, 59, 0.5);
+  z-index: 3;
+}
+
+/* Centered Google Maps button overlay */
+.vc-center-btns {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.vc-center-btns .btn-metallic-gold {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  padding: 12px 28px;
+}
+
+/* Address + buttons row below carousel */
+.venue-actions-row {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px;
+}
+
+.venue-address-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #47574E;
+  font-size: 0.92rem;
+}
+
+.venue-address-pill svg {
+  color: var(--gold-primary);
+  flex-shrink: 0;
+}
+
+.venue-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+
+.btn-metallic-gold {
+  background: var(--gold-metallic);
+  color: var(--bg-dark-emerald);
+  border: none;
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(158, 125, 59, 0.35);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-metallic-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(158, 125, 59, 0.5);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--bg-dark-emerald);
+  border: 1px solid var(--gold-primary);
+  padding: 14px 22px;
+  border-radius: 40px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+  background: rgba(158, 125, 59, 0.1);
+  color: var(--gold-primary);
+}
+
+/* FOOTER */
+/* ==========================================================================
+   CLOSING SECTION — Au plaisir de vous accueillir
+   ========================================================================== */
+.closing-section {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 30px 90px 30px;
+  text-align: center;
+  background: #F5F2EC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Bokeh particles */
+.closing-bokeh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bokeh-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+  animation: bokehFloat 6s ease-in-out infinite;
+}
+
+.bokeh-dot-0 { width: 18px; height: 18px; opacity: 0.55; animation-duration: 5.5s; }
+.bokeh-dot-1 { width: 10px; height: 10px; opacity: 0.40; animation-duration: 7s; }
+.bokeh-dot-2 { width: 24px; height: 24px; opacity: 0.35; animation-duration: 6.5s; }
+.bokeh-dot-3 { width: 8px;  height: 8px;  opacity: 0.50; animation-duration: 5s; }
+.bokeh-dot-4 { width: 14px; height: 14px; opacity: 0.45; animation-duration: 8s; }
+.bokeh-dot-5 { width: 20px; height: 20px; opacity: 0.30; animation-duration: 6s; }
+
+@keyframes bokehFloat {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.4; }
+  50%       { transform: translateY(-12px) scale(1.1); opacity: 0.7; }
+}
+
+/* Chandelier image */
+.closing-chandelier {
+  width: clamp(240px, 60vw, 420px);
+  height: auto;
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+/* Gold cursive text */
+.closing-text {
+  font-family: var(--font-cursive);
+  font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+  color: #7A5818;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.6);
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+
+/* Ornamental divider */
+.closing-divider {
+  width: clamp(200px, 70vw, 340px);
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Floral medallion */
+.closing-medallion {
+  width: 52px;
+  height: 52px;
+  position: relative;
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.site-footer {
+  padding: 60px 30px 50px 30px;
+  text-align: center;
+  background: #F5F2EC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font-cursive);
+  font-size: 3rem;
+  color: var(--gold-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* Beautiful couple names row */
+.footer-names {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-name-left,
+.footer-name-right {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 300;
+  color: var(--bg-dark-emerald);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.footer-ampersand {
+  font-family: var(--font-cursive);
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  color: var(--gold-primary);
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* Date line */
+.footer-date-line {
+  font-family: var(--font-royal);
+  font-size: 0.85rem;
+  letter-spacing: 5px;
+  color: #8A9E8A;
+  margin-top: 4px;
+}
+
+/* Thin gold separator */
+.footer-bottom-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 850px) {
+  .venue-section-box {
+    grid-template-columns: 1fr;
+  }
+  .venue-img-wrap {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 550px) {
+  .marble-card-frame {
+    min-height: 100vh;
+    padding: 110px 20px 50px 20px;
+  }
+  .marble-content-box, .marble-down-arrow-wrap {
+    width: 88%;
+  }
+  .marble-name-groom, .marble-name-bride {
+    font-size: 4.4rem;
+  }
+  .pure-arch-verse-card {
+    padding: 85px 18px 55px 18px;
+  }
+  .digit-unit {
+    font-size: 2.4rem;
+  }
+  .colon-sep {
+    font-size: 2rem;
+  }
+  .label-unit {
+    font-size: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE — Mobile-first fluid layout
+   Desktop & Tablet (≥768px): fixed centered card (520px max)
+   Mobile phones: fluid, adapts to all phone sizes
+   ========================================================================== */
+
+/* --- Phones: all sizes (up to 767px) --- */
+@media (max-width: 767px) {
+  html {
+    font-size: 15px;
+  }
+
+  .app-shell {
+    width: min(100vw, 430px);
+    margin: 0 auto;
+  }
+
+  .intro-video-wrap {
+    width: min(100vw, 430px);
+    height: 100dvh;
+  }
+
+  .marble-card-frame {
+    padding: 90px 18px 50px 18px;
+    min-height: 100dvh;
+  }
+
+  .marble-content-box,
+  .marble-down-arrow-wrap {
+    width: 92%;
+  }
+
+  .marble-name-groom,
+  .marble-name-bride {
+    font-size: clamp(3.4rem, 14vw, 5rem);
+  }
+
+  .marble-name-amp {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .clean-countdown-title {
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+
+  .clean-countdown-digits-row {
+    gap: clamp(10px, 3vw, 24px);
+  }
+
+  .digit-unit {
+    font-size: clamp(2rem, 8vw, 3.2rem);
+  }
+
+  .label-unit {
+    font-size: clamp(0.6rem, 2.2vw, 0.9rem);
+  }
+
+  .pure-arch-verse-card {
+    padding: 80px 16px 50px 16px;
+  }
+
+  .soe-card {
+    padding: 44px 18px;
+  }
+
+  .venue-section-box {
+    grid-template-columns: 1fr;
+  }
+
+  .music-fab {
+    width: 52px;
+    height: 52px;
+    bottom: 20px;
+    right: 16px;
+  }
+}
+
+/* --- Small phones (≤390px, e.g. iPhone SE, Galaxy A) --- */
+@media (max-width: 390px) {
+  html {
+    font-size: 14px;
+  }
+
+  .marble-name-groom,
+  .marble-name-bride {
+    font-size: clamp(2.8rem, 16vw, 4rem);
+  }
+
+  .digit-unit {
+    font-size: clamp(1.8rem, 9vw, 2.8rem);
+  }
+
+  .clean-countdown-digits-row {
+    gap: 8px;
+  }
+}
+
+/* --- Tablet sizes (768px–1024px): same size as the slightly larger phone layout --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .app-shell {
+    width: min(100vw, 430px);
+    margin: 0 auto;
+  }
+
+  .intro-video-wrap {
+    width: min(100vw, 430px);
+    height: 100dvh;
+  }
+
+  .marble-card-frame {
+    padding: 90px 18px 50px 18px;
+    min-height: 100dvh;
+  }
+
+  .marble-content-box,
+  .marble-down-arrow-wrap {
+    width: 92%;
+  }
+
+  .marble-name-groom,
+  .marble-name-bride {
+    font-size: clamp(3.4rem, 14vw, 5rem);
+  }
+}
+
+/* --- Desktop only (≥1025px): fixed centered card --- */
+@media (min-width: 1025px) {
+  .app-shell {
+    width: 560px;
+  }
+
+  .intro-video-wrap {
+    width: 560px;
+    height: 100vh;
+  }
+}
